@@ -10,7 +10,11 @@ import UIKit
 
 struct MusicCardView: View {
     var body: some View {
-        CardView()
+        NavigationStack {
+            CardView()
+                .navigationTitle("InTune")
+                .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
@@ -41,7 +45,7 @@ class ViewController: UIViewController, SwipeCardStackDataSource {
         x: 20,
         y: 100,
         width: view.bounds.width - 40,
-        height: view.bounds.height - 200)
+        height: view.bounds.height - 250)
       cardStack.dataSource = self
   }
     
