@@ -10,11 +10,7 @@ The api key is under my account (Collin Le)
 **My Idea**
 the card should contain the music album cover and should have a preview/play button
  card
- -------------
- |   Album    |
- |   cover    |
- | play button|
- ---------------
+
 each users profile can contain stacks of cards and each card is a song
 
 Swipe up can be to move to the next song in the user's profile
