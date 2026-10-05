@@ -29,4 +29,6 @@ View consists of home view, card view which is the swiping feature, and the spot
 **Service**
 Contains all the spotify configurations for now. Probably still need to work on it
 
+## DATABASE
+We currently do not have a database. I heard Firebase is really easy to use, unless anyone feels more comfortable with a different service/database. We need a data base to save users accounts.
 
