@@ -19,17 +19,17 @@ struct MusicCardView: View {
 }
 
 struct CardView: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> ViewController {
-        ViewController()
+    func makeUIViewController(context: Context) -> CardViewController {
+        CardViewController()
     }
     
-    func updateUIViewController(_ uiViewController: ViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: CardViewController, context: Context) {
         
     }
 }
 
 
-class ViewController: UIViewController, SwipeCardStackDataSource {
+class CardViewController: UIViewController, SwipeCardStackDataSource {
   let cardStack = SwipeCardStack()
   
   let cardImages = [

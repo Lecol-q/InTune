@@ -8,10 +8,14 @@
 import Foundation
 
 
-struct Song: Identifiable, Decodable, Equatable {
+struct Song: Identifiable, Codable, Equatable {
     let trackId: Int
     let trackName: String
     let artistName: String
     let artworkUrl100: String?
     let previewUrl: String?
+    
+    var id: Int {
+        trackId
+    }
 }
