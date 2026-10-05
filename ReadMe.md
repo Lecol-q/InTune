@@ -20,10 +20,13 @@ Swipe left is to decline matching
 swipe right is to match
 
 
-**Service Folder**
+## Service Folder
 contains the spotify api/framework like OAuth
 
 **View**
 View consists of home view, card view which is the swiping feature, and the spotify login.
+
+**Service**
+Contains all the spotify configurations for now. Probably still need to work on it
 
 
