@@ -1,17 +1,14 @@
 import SwiftUI
-import Playgrounds
 
 struct ContentView: View {
+    @AppStorage(AppAppearance.storageKey) private var appearance = AppAppearance.system.rawValue
+
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        HomeView()
+            .preferredColorScheme((AppAppearance(rawValue: appearance) ?? .system).colorScheme)
     }
 }
 
-#Preview {
-    ContentView()
-}
-
-#Playground {
-    _ = 1 + 2
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View { ContentView() }
 }
