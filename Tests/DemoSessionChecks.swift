@@ -34,6 +34,12 @@ import Foundation
         precondition(!restored.isActive, "Disabling demo hides it without a Spotify account")
         let again = DemoSession(defaults: defaults)
         precondition(!again.isActive, "Disabled demo stays disabled after relaunch")
+        restored.enabled = true
+        restored.setCommunityConnected(true)
+        precondition(!restored.enabled && !restored.isActive)
+        restored.enabled = true
+        precondition(!restored.isActive, "An InTune account also suppresses demo content")
+        restored.setCommunityConnected(false)
         print("Demo checks passed: default mode, likes/passes, duplicate prevention, persistence, showcase, shared genres, exhaustion, reset, mode toggle.")
     }
 }

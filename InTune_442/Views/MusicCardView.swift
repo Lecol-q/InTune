@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MusicCardView: View {
+    @ObservedObject private var community = CommunityStore.shared
     @ObservedObject private var music = MusicProfileModel.shared
     @ObservedObject private var demo = DemoSession.shared
     @State private var drag = CGSize.zero
@@ -9,12 +10,14 @@ struct MusicCardView: View {
         ScrollView {
             VStack(spacing: 22) {
                 if demo.isActive { DemoBadge() }
-                if music.connected {
-                    MarcDiscoveryView()
-                } else if !demo.isActive {
-                    ContentUnavailableView("No profiles to discover yet", systemImage: "person.2",
-                        description: Text("Real profiles will appear here when InTune's shared profile service is ready."))
-                } else if let person = demo.remaining.first {
+                if music.connected || community.uid != nil {
+                    LocalTestProfileDiscoveryView()
+                    Divider()
+                }
+                if community.uid != nil || !demo.isActive {
+                    CommunityDiscoveryView()
+                }
+                if demo.isActive, let person = demo.remaining.first {
                     HStack {
                         Text("Find your frequency").font(.title2.bold())
                         Spacer()
@@ -61,7 +64,7 @@ struct MusicCardView: View {
                     }.controlSize(.large)
                     Text("Swipe left to pass, right to like. Likes appear on Home.")
                         .font(.caption).foregroundStyle(.secondary)
-                } else {
+                } else if demo.isActive {
                     ContentUnavailableView("You're all caught up", systemImage: "checkmark.circle",
                         description: Text("You've explored every sample profile. Your demo likes are on Home."))
                     Button("Restart demo cards") { demo.resetCards() }.buttonStyle(.borderedProminent)

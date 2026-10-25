@@ -22,6 +22,7 @@ enum AppAppearance: String, CaseIterable, Identifiable {
 }
 
 struct SettingsView: View {
+    @ObservedObject private var community = CommunityStore.shared
     @ObservedObject private var music = MusicProfileModel.shared
     @ObservedObject private var demo = DemoSession.shared
     @Environment(\.dismiss) private var dismiss
@@ -32,7 +33,10 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                if !music.connected {
+                Section("Account and shared profiles") {
+                    NavigationLink("InTune account") { CommunityAccountView() }
+                }
+                if !music.connected && community.uid == nil {
                     Section("Demo") {
                         Toggle("Demo mode", isOn: $demo.enabled).disabled(music.busy)
                         Text("Show fictional profiles and sample music. Turn off to hide all demo content throughout the app.")

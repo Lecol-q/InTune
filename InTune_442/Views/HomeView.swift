@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject private var community = CommunityStore.shared
     @ObservedObject private var music = MusicProfileModel.shared
     @ObservedObject private var demo = DemoSession.shared
-    @ObservedObject private var marc = MarcTestMatch.shared
-    @State private var showingMarcChat = false
+    @ObservedObject private var testProfiles = LocalTestProfiles.shared
+    @State private var selectedTestChat: LocalTestProfile?
     @State private var selectedTab = 0
 
     var body: some View {
@@ -15,6 +16,14 @@ struct HomeView: View {
                         InTuneLogoView().frame(maxWidth: .infinity)
                         Text("Good music.\nBetter connections.").font(.largeTitle.bold())
                         Text("Meet through the songs you love.").foregroundStyle(.secondary)
+                        NavigationLink {
+                            CommunityAccountView()
+                        } label: {
+                            Label(community.uid == nil ? "Connect with your teammates" : "Manage shared profile", systemImage: "person.2")
+                        }
+                        if community.uid != nil {
+                            Text("You have \(community.matches.count) shared matches").font(.subheadline).foregroundStyle(.secondary)
+                        }
                         if demo.isActive {
                             DemoBadge()
                             Text("Explore sample profiles and build your music overview. Everything in demo mode stays on this device; likes don't create real matches or send messages.")
@@ -42,16 +51,17 @@ struct HomeView: View {
                             Button("View my music overview") { selectedTab = 2 }
                             Button("Reset demo likes and passes", role: .destructive) { demo.resetCards() }
                         } else {
-                            if music.connected {
-                                if marc.state.matched {
-                                    Button {
-                                        showingMarcChat = true
-                                    } label: {
-                                        Label("Message Marc · test match", systemImage: "bubble.left.and.bubble.right")
-                                    }.buttonStyle(.borderedProminent)
-                                } else {
-                                    Button("Meet Marc · test profile") { selectedTab = 1 }
+                            if music.connected || community.uid != nil {
+                                if testProfiles.matched.isEmpty {
+                                    Button("Meet Ava, Maya, and Zoe · test profiles") { selectedTab = 1 }
                                         .buttonStyle(.borderedProminent)
+                                } else {
+                                    Text("Your test chats").font(.headline)
+                                    ForEach(testProfiles.matched) { person in
+                                        Button { selectedTestChat = person } label: {
+                                            Label("Message \(person.name)", systemImage: "bubble.left.and.bubble.right")
+                                        }.buttonStyle(.bordered)
+                                    }
                                 }
                             }
                             if let taste = music.taste {
@@ -84,8 +94,11 @@ struct HomeView: View {
                 .tabItem { Label("Discover", systemImage: "music.note") }.tag(1)
             NavigationStack { Profile() }
                 .tabItem { Label("My music", systemImage: "person.crop.circle") }.tag(2)
+            NavigationStack { CommunityMatchesView() }
+                .tabItem { Label("Matches", systemImage: "bubble.left.and.bubble.right") }.tag(3)
         }.tint(InTuneBrand.pink)
-            .sheet(isPresented: $showingMarcChat) { MarcChatView() }
+            .sheet(item: $selectedTestChat) { person in LocalTestChatView(profile: person) }
+            .task(id: community.uid) { await community.refresh() }
     }
 
     private func stat(_ value: String, _ label: String) -> some View {

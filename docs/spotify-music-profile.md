@@ -1,6 +1,6 @@
 # Spotify music profile prototype
 
-This implements Kamran's music import and taste-summary slice of the proposal. The proposal describes both Spotify and Apple Music; this prototype implements Spotify only. It does not implement romantic compatibility scoring, discovery, accounts, or the match/privacy backend.
+This implements Kamran's music import and taste-summary slice of the proposal. The proposal describes both Spotify and Apple Music; this prototype implements Spotify only. It does not implement romantic compatibility scoring. Shared account, discovery, match, and chat clients are now prepared but require the team's Firebase configuration and deployment before they connect devices.
 
 ## What works in code
 
@@ -20,13 +20,9 @@ The snapshot and OAuth tokens are stored separately in device-only Keychain item
 
 ## Firebase handoff
 
-There is currently no Firebase SDK, Firebase project configuration, or Authentication integration in the repo. This prototype intentionally labels storage as device-local.
+The app-side Firebase REST integration is prepared. Project configuration is empty, no Firebase project has been created or deployed, and live multi-device operation is not verified. A teammate is handling Firebase setup/deployment. See [the backend handoff](../backend/README.md) for the exact proposed schema, rules, security tests, and activation steps. Keep collection/field names coordinated with CommunityStore.swift and FirebaseCommunityClient.swift.
 
-When the account/profile work is ready, add a repository that saves a bounded `MusicTaste` snapshot under the authenticated Firebase UID, for example `profiles/{uid}/music/overview`. Store `updatedAt`, `timeRange`, ordered artist/track IDs and display metadata, genre weights, and the selected showcase. Treat this as user-approved profile content. Store OAuth credentials separately from readable profile data; never include them in public profile documents. Clear imported data on disconnect in the server repository as well as on-device. On InTune sign-out, clear device cache and credentials to avoid account crossover.
-
-Firestore rules must require an authenticated owner for writes. Public pre-match fields must be separated from private photos/contact data, since Firestore rules do not redact fields in an otherwise readable document. Backend ownership checks, profile sharing consent, Spotify attribution/branding, and disconnect/delete behavior must be implemented and tested before publishing profiles. Spotify supplies music data, not the user's InTune name, age, or biography.
-
-Do not describe artist overlap as romantic compatibility or invent a Spotify-generated compatibility score. Any later similarity ranking should be a separate, explicitly explained product feature.
+Each user needs an InTune account in the same Firebase project, then explicitly selects Share my profile. Spotify login alone does not share data. Published fields are allowlisted and exclude tokens, emails, and photos. Real messages are separate from the labeled local test chats. Until the teammate configures Firebase, all previous device-local features still work.
 
 ## Checks
 
@@ -85,12 +81,10 @@ Sources: [Spotify artist genres](https://developer.spotify.com/documentation/web
 
 Validation: app Swift sources typechecked for the simulator SDK. Executed state/genre checks cover disabling demo, connected-state precedence, saved preference restoration, artist identity, Spotify-tag priority, cached-profile compatibility, metadata provenance, exact-ID network resolution with mocked responses, cache reuse, 404 handling, offline fallbacks, and exclusion of OAuth credentials from metadata requests. Live MusicBrainz lookup and on-device UI interaction remain unverified.
 
-## Marc match and chat test
+## Three fictional women profiles for chat testing
 
-Signed-in Spotify users see Marc, age 24, as an explicitly labeled local test profile in Discover. His taste tags are underground hip hop, jazz rap, abstract hip hop, and boom bap. This fixture is separate from the general demo toggle and has no real remote account behind it.
+After Spotify or InTune sign-in, Discover shows Ava (22), Maya (23), and Zoe (24) as explicitly labeled fictional test profiles. A right swipe or Like creates a local test match, adds that profile's unique scripted first message once, and opens the chat. You can reply and reopen separate threads from Home, Discover, or the Test chats section in Matches. These test conversations do not use Firebase and no messages are delivered to a real person.
 
-Swipe right or tap Like Marc to create an automatic local test match and open the chat. The initial incoming greeting is labeled scripted; outgoing messages are labeled saved on this device. No messages are delivered to a person or server, and no replies are generated. Reopen the conversation from Discover or Home. Pass hides the card, with a Show Marc again action.
+Each thread persists in a separate entry of a device-only Keychain item. Spotify disconnect/new authorization and InTune sign-out clear the new test chats. Passing removes a card and offers Show passed test profiles again without erasing existing matches. Empty/oversized messages and unsigned-in sends are rejected. Incoming messages are labeled scripted, outgoing messages as saved on-device.
 
-The match and transcript are stored in a separate Keychain item and cleared on Spotify disconnect or a newly authorized Spotify account. Sending requires both a connection and the local match. Empty or over-2,000-character messages are rejected; unsuccessful saves preserve the draft and show an error. Repeated likes preserve the original transcript.
-
-Validation: all app sources typechecked. Executed MarcMatchChecks cover connection gating, pre-match send rejection, pass/retry, automatic match, duplicate prevention, message normalization/limits, persisted-state decoding, storage failures, and test-state deletion. Native UI gestures were not exercised through screen access.
+Validation: app sources typechecked and LocalTestProfileChecks executed successfully for adult fixture identities, sign-in gating, automatic matches, unique initial greetings, thread isolation, persistence, validation, clearing, and save failures. Native gestures remain unverified through screen access.

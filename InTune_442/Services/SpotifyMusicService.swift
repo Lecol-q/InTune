@@ -119,7 +119,7 @@ final class SpotifyMusicService: NSObject, ASWebAuthenticationPresentationContex
             throw SpotifyMusicError(message: "Spotify did not return a refresh token. Please reconnect.")
         }
         // A newly authorized account must not inherit another account's cached profile or chat.
-        try MarcTestMatch.shared.clear()
+        try LocalTestProfiles.shared.clear()
         try MusicVault.delete("taste")
         try save(result, refreshToken: refresh)
     }
@@ -138,7 +138,7 @@ final class SpotifyMusicService: NSObject, ASWebAuthenticationPresentationContex
         try MusicVault.delete("tokens")
         try MusicVault.delete("taste")
         try MusicBrainzGenreService.shared.clearCache()
-        try MarcTestMatch.shared.clear()
+        try LocalTestProfiles.shared.clear()
         // Remove the old demo's insecure token cache as part of migration.
         UserDefaults.standard.removeObject(forKey: "access-token-key")
     }

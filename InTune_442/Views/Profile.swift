@@ -11,6 +11,8 @@ final class MusicProfileModel: ObservableObject {
     @Published var error: String?
 
     init() {
+        // Retire the old test profile's saved conversation without affecting current chats.
+        try? MusicVault.delete("marc-test-match")
         connected = spotify.isConnected
         DemoSession.shared.setSpotifyConnected(connected)
         do {

@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function matchedWith(other) {
+      return exists(/databases/$(database)/documents/matches/$(request.auth.uid + '__' + other)) ||
+             exists(/databases/$(database)/documents/matches/$(other + '__' + request.auth.uid));
+    }
+    function active(uid) {
+      return exists(/databases/$(database)/documents/profiles/$(uid)) &&
+             get(/databases/$(database)/documents/profiles/$(uid)).data.active == true;
+    }
+    function participant(matchID) {
+      return signedIn() && request.auth.uid in
+        get(/databases/$(database)/documents/matches/$(matchID)).data.members;
+    }
+    match /profiles/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || resource.data.active == true || matchedWith(uid));
+      allow list: if signedIn() && resource.data.active == true;
+      allow create, update: if signedIn() && request.auth.uid == uid &&
+        request.resource.data.keys().hasAll(['ownerID','name','age','bio','artists','genres','showcase','active']) &&
+        request.resource.data.keys().hasOnly(['ownerID','name','age','bio','artists','genres','showcase','active']) &&
+        request.resource.data.ownerID == uid &&
+        request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60 &&
+        request.resource.data.age is int && request.resource.data.age >= 18 && request.resource.data.age <= 120 &&
+        request.resource.data.bio is string && request.resource.data.bio.size() <= 500 &&
+        request.resource.data.artists is list && request.resource.data.artists.size() <= 10 &&
+        request.resource.data.genres is list && request.resource.data.genres.size() <= 12 &&
+        request.resource.data.showcase is string && request.resource.data.showcase.size() <= 1000 &&
+        request.resource.data.active is bool;
+      allow delete: if signedIn() && request.auth.uid == uid;
+    }
+    match /swipes/{from}/outgoing/{to} {
+      allow get: if signedIn() && (request.auth.uid == from || request.auth.uid == to);
+      allow list: if signedIn() && request.auth.uid == from;
+      allow create, update: if signedIn() && request.auth.uid == from && from != to && active(from) && active(to) &&
+        request.resource.data.keys().hasAll(['fromID','toID','decision','createdAt']) &&
+        request.resource.data.keys().hasOnly(['fromID','toID','decision','createdAt']) &&
+        request.resource.data.fromID == from && request.resource.data.toID == to &&
+        request.resource.data.decision in ['like','pass'] && request.resource.data.createdAt == request.time;
+    }
+    match /matches/{matchID} {
+      allow get, list: if signedIn() && request.auth.uid in resource.data.members;
+      allow create: if signedIn() &&
+        request.resource.data.keys().hasAll(['members','createdAt']) &&
+        request.resource.data.keys().hasOnly(['members','createdAt']) &&
+        request.resource.data.members is list && request.resource.data.members.size() == 2 &&
+        request.resource.data.members[0] is string && request.resource.data.members[1] is string &&
+        request.resource.data.members[0] != request.resource.data.members[1] &&
+        request.auth.uid in request.resource.data.members &&
+        (matchID == request.resource.data.members[0] + '__' + request.resource.data.members[1] ||
+         matchID == request.resource.data.members[1] + '__' + request.resource.data.members[0]) &&
+        active(request.resource.data.members[0]) && active(request.resource.data.members[1]) &&
+        get(/databases/$(database)/documents/swipes/$(request.resource.data.members[0])/outgoing/$(request.resource.data.members[1])).data.decision == 'like' &&
+        get(/databases/$(database)/documents/swipes/$(request.resource.data.members[1])/outgoing/$(request.resource.data.members[0])).data.decision == 'like' &&
+        request.resource.data.createdAt == request.time;
+      match /messages/{messageID} {
+        allow read: if participant(matchID);
+        allow create: if participant(matchID) &&
+          request.resource.data.keys().hasAll(['senderID','text','sentAt']) &&
+          request.resource.data.keys().hasOnly(['senderID','text','sentAt']) &&
+          request.resource.data.senderID == request.auth.uid &&
+          request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000 &&
+          request.resource.data.sentAt == request.time;
+      }
+    }
+  }
+}

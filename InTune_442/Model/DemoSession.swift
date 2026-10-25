@@ -51,7 +51,12 @@ enum DemoMusic {
 final class DemoSession: ObservableObject {
     static let shared = DemoSession()
     @Published private(set) var spotifyConnected = false
-    var isActive: Bool { enabled && !spotifyConnected }
+    @Published private(set) var communityConnected = false
+    var isActive: Bool { enabled && !spotifyConnected && !communityConnected }
+    func setCommunityConnected(_ connected: Bool) {
+        communityConnected = connected
+        if connected { enabled = false }
+    }
     func setSpotifyConnected(_ connected: Bool) {
         spotifyConnected = connected
         if connected { enabled = false }
