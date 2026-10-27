@@ -84,7 +84,9 @@ struct CommunityDiscoveryView: View {
                     Text("\(person.name), \(person.age)").font(.largeTitle.bold())
                     Text(person.bio)
                     GenreTags(genres: person.genres)
-                    if !person.showcase.isEmpty {
+                    if let selectedSong = ShowcaseSong.shared(person.showcase) {
+                        ShowcaseSongCard(song: selectedSong)
+                    } else if !person.showcase.isEmpty {
                         Label(person.showcase, systemImage: "music.note").font(.headline)
                     }
                     if !person.artists.isEmpty { Text(person.artists.joined(separator: ", ")).foregroundStyle(.secondary) }

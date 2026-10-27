@@ -125,8 +125,7 @@ struct Profile: View {
                         }
                     }
                     if let track = taste.showcaseTrack {
-                        MusicArtwork(title: track.name)
-                        trackRow(track)
+                        ShowcaseSongCard(song: .selected(track))
                     }
                 }
                 Section("Top artists") {

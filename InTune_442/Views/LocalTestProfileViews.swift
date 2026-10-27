@@ -15,7 +15,7 @@ struct LocalTestProfileDiscoveryView: View {
                     .font(.caption).foregroundStyle(.secondary)
                 if let person = tests.remaining.first {
                     VStack(alignment: .leading, spacing: 18) {
-                        MusicArtwork(title: person.genres.prefix(2).joined(separator: " + "))
+                        ShowcaseSongCard(song: person.showcaseSong)
                         Text("\(person.name), \(person.age)").font(.largeTitle.bold())
                         Text(person.bio)
                         GenreTags(genres: person.genres)
@@ -53,6 +53,11 @@ struct LocalTestProfileDiscoveryView: View {
                         }.buttonStyle(.bordered)
                     }
                 }
+                Button("Reset test profiles") {
+                    if tests.reset() { drag = .zero }
+                }.buttonStyle(.bordered)
+                Text("Restart all three profiles and clear their local test chats.")
+                    .font(.caption).foregroundStyle(.secondary)
                 if let error = tests.error { Text(error).foregroundStyle(.red).font(.footnote) }
             }
             .sheet(item: $chat) { person in LocalTestChatView(profile: person) }

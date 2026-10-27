@@ -69,12 +69,7 @@ struct HomeView: View {
                                 Text(taste.summary)
                                 GenreTags(genres: Array(taste.genres.prefix(8)).map(\.name))
                                 if let song = taste.showcaseTrack {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text("Your showcase song").font(.caption).foregroundStyle(.secondary)
-                                        Text(song.name).font(.headline)
-                                        Text(song.artists.map(\.name).joined(separator: ", "))
-                                            .foregroundStyle(.secondary)
-                                    }
+                                    ShowcaseSongCard(song: .selected(song))
                                 }
                                 Button("View my music") { selectedTab = 2 }
                                     .buttonStyle(.borderedProminent)

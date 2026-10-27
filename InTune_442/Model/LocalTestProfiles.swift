@@ -7,20 +7,27 @@ struct LocalTestProfile: Identifiable, Equatable {
     let age: Int
     let bio: String
     let genres: [String]
+    let showcaseSong: ShowcaseSong
     let greeting: String
 
     static let women: [LocalTestProfile] = [
         .init(id: "test-ava", name: "Ava", age: 22,
               bio: "Small concerts, long walks, and a playlist for every mood. Send me your favorite late-night song.",
               genres: ["indie pop", "dream pop", "alternative r&b"],
+              showcaseSong: ShowcaseSong(title: "Space Song", artist: "Beach House", appleTrackID: 997914096,
+                  spotifyURL: "https://open.spotify.com/track/7H0ya83CMmgFcOhw0UB6ow"),
               greeting: "Hey! What's one song you could listen to on repeat all day?"),
         .init(id: "test-maya", name: "Maya", age: 23,
               bio: "R&B and soul on the daily. My favorite way to get to know someone is trading playlists.",
               genres: ["contemporary r&b", "neo soul", "alternative r&b"],
+              showcaseSong: ShowcaseSong(title: "Snooze", artist: "SZA", appleTrackID: 1796270661,
+                  spotifyURL: "https://open.spotify.com/track/4iZ4pt7kvcaH6Yo8UoZ4s2"),
               greeting: "Hi! We matched 🎶 What have you been listening to lately?"),
         .init(id: "test-zoe", name: "Zoe", age: 24,
               bio: "Dusty samples, underground records, and jazz-rap deep cuts. Always looking for a new project to get lost in.",
               genres: ["underground hip hop", "jazz rap", "boom bap"],
+              showcaseSong: ShowcaseSong(title: "Crime Pays", artist: "Freddie Gibbs & Madlib", appleTrackID: 1464243887,
+                  spotifyURL: "https://open.spotify.com/track/4w5m4X0OZ2IslxNOgtntTN"),
               greeting: "Hey! Put me onto an underrated album—I need something new for tonight.")
     ]
 }
@@ -77,6 +84,9 @@ final class LocalTestProfiles: ObservableObject {
         next[profile.id]?.messages.append(TestChatMessage(id: UUID(), text: cleaned, sentByMe: true, createdAt: Date()))
         return save(next)
     }
+    /// Restart the fictional swipe flow and its chats using the same persistent store.
+    @discardableResult func reset() -> Bool { save([:]) }
+
     func clear() throws {
         try MusicVault.delete("test-profile-matches")
         entries = [:]; error = nil

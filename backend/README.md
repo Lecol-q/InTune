@@ -45,3 +45,7 @@ Publishing is explicit and includes only the allowlisted pre-match fields. Music
 - Relaunch and sign in to the same account; shared profile, match, and transcript survive.
 
 References: [Firebase Auth REST](https://firebase.google.com/docs/reference/rest/auth), [Firestore REST with Firebase ID tokens](https://firebase.google.com/docs/firestore/use-rest-api), [Security Rules emulator tests](https://firebase.google.com/docs/rules/unit-tests).
+
+## Song-preview compatibility
+
+Card audio previews use the existing `showcase` display string (song title, an em dash separator, and artist names). No new Firestore fields are required. Preview availability is resolved locally from Apple catalog metadata, and does not change which Spotify song was selected or which profile fields are published.

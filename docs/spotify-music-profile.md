@@ -88,3 +88,23 @@ After Spotify or InTune sign-in, Discover shows Ava (22), Maya (23), and Zoe (24
 Each thread persists in a separate entry of a device-only Keychain item. Spotify disconnect/new authorization and InTune sign-out clear the new test chats. Passing removes a card and offers Show passed test profiles again without erasing existing matches. Empty/oversized messages and unsigned-in sends are rejected. Incoming messages are labeled scripted, outgoing messages as saved on-device.
 
 Validation: app sources typechecked and LocalTestProfileChecks executed successfully for adult fixture identities, sign-in gating, automatic matches, unique initial greetings, thread isolation, persistence, validation, clearing, and save failures. Native gestures remain unverified through screen access.
+
+## Restarting test swipes
+
+Use Settings → Test profiles → Reset test profiles, or the Reset test profiles button in Discover. It clears Ava, Maya, and Zoe's local matches and test conversations and restores all three cards. Swiping right again creates a fresh match and initial scripted greeting. Reset persists across relaunch; if storage fails, existing state is preserved. Spotify imports, appearance settings, and real shared Firebase matches/messages are unaffected.
+
+## Showcase-song previews
+
+The signed-in test cards now keep a chosen showcase song: Ava — Space Song (Beach House), Maya — Snooze (SZA), Zoe — Crime Pays (Freddie Gibbs & Madlib). Each shows its title/artist, available artwork, and Play/Pause. Their Apple song IDs were checked against live US iTunes lookup responses on October 27, 2026; all three returned previews and artwork. No audio files were downloaded during validation.
+
+The same component appears for the user's selected Spotify showcase in My music/Home and for the showcase displayed on real shared cards. Existing selection and Firestore `showcase` fields are preserved: no backend schema change. Public Apple catalog lookup resolves previews by artist/title, or by fixed Apple IDs for the fixtures. Exact title and artist matching avoids substituting a cover, remix, or unrelated track. A regional/connection/unavailable state is shown when no matching preview exists. The original Spotify song link remains available for Spotify selections.
+
+Previews stream through AVPlayer, are capped at 30 seconds, and start only on a button tap. Only one preview plays at once; playback stops on card change, leaving its view, backgrounding the app, or finishing. Metadata is cached in memory; the app does not save audio clips. The UI attributes previews to iTunes and links to the full song's store page.
+
+Validation: app Swift sources typechecked; model/lookup checks passed for metadata decoding, exact song matching, secure media URLs, preserving the chosen song, shared-display parsing, request authentication separation, caching, and all three live test-song lookup results. Local test matching/chat/reset checks passed after the fixture changes. Actual on-device audio playback has not been verified.
+
+References: [Apple Search API](https://performance-partners.apple.com/search-api), [Search result fields](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/UnderstandingSearchResults.html).
+
+## Spotify song links
+
+View on Spotify is now the primary external song action, including verified direct track links for all three fictional test profiles. The Apple-supplied preview keeps only its small linked iTunes attribution. If an older shared profile contains just song/artist text, Find on Spotify opens a safely encoded Spotify search instead of inventing a track ID. Actual Spotify selections retain their original direct song URL. URL routing, matching, and source-code checks passed.
