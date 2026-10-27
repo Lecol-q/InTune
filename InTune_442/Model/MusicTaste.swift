@@ -56,10 +56,11 @@ struct MusicTaste: Codable, Equatable {
 /// A transparent summary algorithm. Higher-ranked artists contribute more evidence.
 /// Each artist's vote is split across its unique tags so many tags don't inflate its vote.
 enum MusicTasteBuilder {
+    static let artistLimit = 10
     static func build(artists: [SpotifyArtist], tracks: [SpotifyTrack],
                       previousShowcase: String? = nil, now: Date = Date()) -> MusicTaste {
         var artistIDs = Set<String>()
-        let uniqueArtists = artists.filter { artistIDs.insert($0.id).inserted }
+        let uniqueArtists = artists.filter { artistIDs.insert($0.id).inserted }.prefix(artistLimit)
             .map(ArtistGenreCatalog.enrich)
         var trackIDs = Set<String>()
         let uniqueTracks = tracks.filter { trackIDs.insert($0.id).inserted }
@@ -95,6 +96,7 @@ enum ArtistGenreCatalog {
         let musicBrainzID: String
     }
     // MusicBrainz artist pages and their Spotify relationships checked 2026-10-25.
+    // Summrs genres and exact Spotify relationship verified via API 2026-10-27.
     static let entries: [String: Entry] = [
         "3TVXtAsR1Inumwj472S9r4": Entry(
             genres: ["hip hop", "r&b", "contemporary r&b", "pop rap", "alternative r&b"],
@@ -104,7 +106,10 @@ enum ArtistGenreCatalog {
             musicBrainzID: "164f0d73-1234-4e2c-8743-d77bf2191051"),
         "0Y4inQK6OespitzD6ijMwb": Entry(
             genres: ["gangsta rap", "hip hop", "hardcore hip hop", "alternative hip hop", "jazz rap"],
-            musicBrainzID: "21645c31-fe1c-45a4-955c-3e172b12c3f9")
+            musicBrainzID: "21645c31-fe1c-45a4-955c-3e172b12c3f9"),
+        "5L15t6I0PQS9SBXbiklPEN": Entry(
+            genres: ["plugg", "pluggnb", "southern hip hop", "trap"],
+            musicBrainzID: "d538d883-3889-44ad-8f32-6167cf4d85ec")
     ]
     static func hasGenres(_ artist: SpotifyArtist) -> Bool {
         (artist.genres ?? []).contains { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }

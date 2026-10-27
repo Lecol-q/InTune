@@ -121,6 +121,7 @@ final class SpotifyMusicService: NSObject, ASWebAuthenticationPresentationContex
         // A newly authorized account must not inherit another account's cached profile or chat.
         try LocalTestProfiles.shared.clear()
         try MusicVault.delete("taste")
+        try MusicVault.delete("genre-corrections")
         try save(result, refreshToken: refresh)
     }
 
@@ -129,7 +130,7 @@ final class SpotifyMusicService: NSObject, ASWebAuthenticationPresentationContex
         // Sequential requests avoid refresh races and keep error handling predictable.
         let artists: SpotifyPage<SpotifyArtist> = try await get("artists", token: token)
         let tracks: SpotifyPage<SpotifyTrack> = try await get("tracks", token: token)
-        let enrichedArtists = await MusicBrainzGenreService.shared.enrich(artists.items)
+        let enrichedArtists = ArtistGenreService.shared.cachedEnrichment(artists.items)
         return MusicTasteBuilder.build(artists: enrichedArtists, tracks: tracks.items,
                                       previousShowcase: previousShowcase)
     }
@@ -137,7 +138,8 @@ final class SpotifyMusicService: NSObject, ASWebAuthenticationPresentationContex
     func disconnect() throws {
         try MusicVault.delete("tokens")
         try MusicVault.delete("taste")
-        try MusicBrainzGenreService.shared.clearCache()
+        try MusicVault.delete("genre-corrections")
+        try ArtistGenreService.shared.clearCache()
         try LocalTestProfiles.shared.clear()
         // Remove the old demo's insecure token cache as part of migration.
         UserDefaults.standard.removeObject(forKey: "access-token-key")
@@ -184,7 +186,8 @@ final class SpotifyMusicService: NSObject, ASWebAuthenticationPresentationContex
     }
 
     private func get<T: Decodable>(_ type: String, token: String) async throws -> T {
-        let url = URL(string: "https://api.spotify.com/v1/me/top/\(type)?time_range=medium_term&limit=50")!
+        let limit = type == "artists" ? MusicTasteBuilder.artistLimit : 50
+        let url = URL(string: "https://api.spotify.com/v1/me/top/\(type)?time_range=medium_term&limit=\(limit)")!
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let (data, response) = try await http.data(for: request)

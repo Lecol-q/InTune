@@ -4,7 +4,6 @@ struct MusicCardView: View {
     @ObservedObject private var community = CommunityStore.shared
     @ObservedObject private var music = MusicProfileModel.shared
     @ObservedObject private var demo = DemoSession.shared
-    @State private var drag = CGSize.zero
 
     var body: some View {
         ScrollView {
@@ -48,12 +47,9 @@ struct MusicCardView: View {
                     .background(.background, in: RoundedRectangle(cornerRadius: 28))
                     .overlay(RoundedRectangle(cornerRadius: 28).stroke(InTuneBrand.pink.opacity(0.2)))
                     .shadow(color: InTuneBrand.pink.opacity(0.1), radius: 16, y: 8)
-                    .offset(x: drag.width)
-                    .rotationEffect(.degrees(Double(drag.width / 24)))
-                    .gesture(DragGesture().onChanged { drag = $0.translation }.onEnded { value in
-                        if abs(value.translation.width) > 90 { demo.decide(person, like: value.translation.width > 0) }
-                        withAnimation(.spring()) { drag = .zero }
-                    })
+                    .horizontalCardSwipe { like in
+                        demo.decide(person, like: like)
+                    }
                     HStack(spacing: 30) {
                         Button { demo.decide(person, like: false) } label: {
                             Label("Pass", systemImage: "xmark").frame(minWidth: 85)

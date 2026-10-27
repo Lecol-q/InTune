@@ -69,7 +69,6 @@ struct CommunityAccountView: View {
 
 struct CommunityDiscoveryView: View {
     @ObservedObject private var community = CommunityStore.shared
-    @State private var drag = CGSize.zero
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("People on InTune").font(.title2.bold())
@@ -95,13 +94,9 @@ struct CommunityDiscoveryView: View {
                 .padding(22).frame(maxWidth: .infinity, alignment: .leading)
                 .background(.background, in: RoundedRectangle(cornerRadius: 24))
                 .overlay(RoundedRectangle(cornerRadius: 24).stroke(InTuneBrand.pink.opacity(0.25)))
-                .offset(x: drag.width)
-                .gesture(DragGesture().onChanged { if !community.busy { drag = $0.translation } }.onEnded { value in
-                    if !community.busy && abs(value.translation.width) > 90 {
-                        Task { await community.swipe(person, like: value.translation.width > 0) }
-                    }
-                    withAnimation(.spring()) { drag = .zero }
-                })
+                .horizontalCardSwipe(enabled: !community.busy) { liked in
+                    Task { await community.swipe(person, like: liked) }
+                }
                 HStack {
                     Button("Pass") { Task { await community.swipe(person, like: false) } }.buttonStyle(.bordered)
                     Spacer()
@@ -117,56 +112,6 @@ struct CommunityDiscoveryView: View {
                 Button("Refresh people and matches") { Task { await community.refresh() } }.disabled(community.busy)
             }
         }.task { await community.refresh() }
-    }
-}
-
-struct CommunityMatchesView: View {
-    @ObservedObject private var music = MusicProfileModel.shared
-    @ObservedObject private var tests = LocalTestProfiles.shared
-    @State private var selectedTestChat: LocalTestProfile?
-    @ObservedObject private var community = CommunityStore.shared
-    var body: some View {
-        List {
-            if (music.connected || community.uid != nil) && !tests.matched.isEmpty {
-                Section("Test chats · on this device") {
-                    ForEach(tests.matched) { person in
-                        Button { selectedTestChat = person } label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Label(person.name, systemImage: "bubble.left.and.bubble.right")
-                                Text(tests.messages(for: person).last?.text ?? "You matched!")
-                                    .font(.caption).foregroundStyle(.secondary).lineLimit(1)
-                            }
-                        }
-                    }
-                }
-            }
-            if community.uid == nil {
-                NavigationLink("Sign in to InTune") { CommunityAccountView() }
-            } else if community.matches.isEmpty {
-                Text("No matches yet. Like someone in Discover; when they like you back, your chat appears here.")
-                    .foregroundStyle(.secondary)
-            }
-            ForEach(community.matches) { match in
-                if let uid = community.uid, let other = match.otherID(than: uid) {
-                    NavigationLink {
-                        CommunityChatView(match: match, name: community.people[other]?.name ?? "Your match")
-                    } label: {
-                        Label(community.people[other]?.name ?? "Your match", systemImage: "bubble.left.and.bubble.right")
-                    }
-                }
-            }
-            if let error = community.error { Text(error).foregroundStyle(.red) }
-        }
-        .navigationTitle("Matches")
-        .sheet(item: $selectedTestChat) { person in LocalTestChatView(profile: person) }
-        .inTuneCornerMark()
-        .refreshable { await community.refresh() }
-        .task(id: community.uid) {
-            while !Task.isCancelled && community.uid != nil {
-                await community.refresh()
-                do { try await Task.sleep(nanoseconds: 8_000_000_000) } catch { break }
-            }
-        }
     }
 }
 

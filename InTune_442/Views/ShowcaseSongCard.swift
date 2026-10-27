@@ -9,24 +9,18 @@ struct ShowcaseSongCard: View {
     @State private var lookupFailed = false
     @State private var lookupID: UUID?
     private var playing: Bool { playback.songID == song.id && playback.isPlaying }
+    private var buffering: Bool { playback.songID == song.id && playback.isBuffering }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Label("SHOWCASE SONG", systemImage: "music.note").font(.caption.bold()).foregroundStyle(.secondary)
-            HStack(spacing: 14) {
-                AsyncImage(url: metadata?.artworkURL) { image in
-                    image.resizable().scaledToFit()
-                } placeholder: {
-                    RoundedRectangle(cornerRadius: 12).fill(InTuneBrand.pink.opacity(0.12))
-                        .overlay(Image(systemName: "music.note").foregroundStyle(InTuneBrand.pink))
-                }
-                .frame(width: 76, height: 76).clipShape(RoundedRectangle(cornerRadius: 12))
-                .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(song.title).font(.headline)
-                    Text(song.artist).font(.subheadline).foregroundStyle(.secondary)
-                }
-                Spacer(minLength: 0)
+            VinylSleeveView(artworkURL: metadata?.artworkURL,
+                            isExpanded: playing,
+                            isPlaying: playing)
+                .id(song.id)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(song.title).font(.headline)
+                Text(song.artist).font(.subheadline).foregroundStyle(.secondary)
             }
             if loading {
                 ProgressView("Finding song preview…").font(.caption)
@@ -34,7 +28,8 @@ struct ShowcaseSongCard: View {
                 Button {
                     playback.toggle(songID: song.id, url: url)
                 } label: {
-                    Label(playing ? "Pause preview" : "Play preview", systemImage: playing ? "pause.fill" : "play.fill")
+                    Label(buffering ? "Cancel loading preview" : (playing ? "Pause preview" : "Play preview"),
+                          systemImage: buffering ? "xmark" : (playing ? "pause.fill" : "play.fill"))
                 }.buttonStyle(.borderedProminent).tint(InTuneBrand.pink)
             } else {
                 Text(lookupFailed ? "Preview couldn't load. Check your connection and try again." : "No matching preview is available in your region.")

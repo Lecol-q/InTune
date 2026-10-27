@@ -5,7 +5,6 @@ struct LocalTestProfileDiscoveryView: View {
     @ObservedObject private var community = CommunityStore.shared
     @ObservedObject private var tests = LocalTestProfiles.shared
     @State private var chat: LocalTestProfile?
-    @State private var drag = CGSize.zero
     private var signedIn: Bool { music.connected || community.uid != nil }
 
     var body: some View {
@@ -25,13 +24,10 @@ struct LocalTestProfileDiscoveryView: View {
                     .padding(22).frame(maxWidth: .infinity, alignment: .leading)
                     .background(.background, in: RoundedRectangle(cornerRadius: 28))
                     .overlay(RoundedRectangle(cornerRadius: 28).stroke(InTuneBrand.pink.opacity(0.25)))
-                    .offset(x: drag.width)
-                    .rotationEffect(.degrees(Double(drag.width / 24)))
-                    .gesture(DragGesture().onChanged { drag = $0.translation }.onEnded { value in
-                        if value.translation.width > 90 { like(person) }
-                        else if value.translation.width < -90 { tests.pass(person, signedIn: signedIn) }
-                        withAnimation(.spring()) { drag = .zero }
-                    })
+                    .horizontalCardSwipe(enabled: signedIn) { liked in
+                        if liked { like(person) }
+                        else { tests.pass(person, signedIn: signedIn) }
+                    }
                     HStack(spacing: 24) {
                         Button { tests.pass(person, signedIn: signedIn) } label: { Label("Pass", systemImage: "xmark") }
                             .buttonStyle(.bordered)
@@ -54,7 +50,7 @@ struct LocalTestProfileDiscoveryView: View {
                     }
                 }
                 Button("Reset test profiles") {
-                    if tests.reset() { drag = .zero }
+                    tests.reset()
                 }.buttonStyle(.bordered)
                 Text("Restart all three profiles and clear their local test chats.")
                     .font(.caption).foregroundStyle(.secondary)
@@ -70,6 +66,7 @@ struct LocalTestProfileDiscoveryView: View {
 
 struct LocalTestChatView: View {
     let profile: LocalTestProfile
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var music = MusicProfileModel.shared
     @ObservedObject private var community = CommunityStore.shared
@@ -103,9 +100,16 @@ struct LocalTestChatView: View {
                                 }
                             }.padding(16)
                         }
-                        .onAppear { if let last = messages.last { proxy.scrollTo(last.id, anchor: .bottom) } }
+                        .onAppear {
+                            if let last = messages.last { proxy.scrollTo(last.id, anchor: .bottom) }
+                            if scenePhase == .active { tests.markRead(profile) }
+                        }
                         .onChange(of: messages.count) { _, _ in
                             if let last = messages.last { withAnimation { proxy.scrollTo(last.id, anchor: .bottom) } }
+                            if scenePhase == .active { tests.markRead(profile) }
+                        }
+                        .onChange(of: scenePhase) { _, phase in
+                            if phase == .active && signedIn { tests.markRead(profile) }
                         }
                     }
                     if let error = tests.error { Text(error).foregroundStyle(.red).font(.footnote) }

@@ -40,6 +40,7 @@ final class LocalTestProfiles: ObservableObject {
         var matched = false
         var passed = false
         var messages: [TestChatMessage] = []
+        var lastReadMessageID: UUID? = nil
     }
     @Published private(set) var entries: [String: Entry]
     @Published private(set) var error: String?
@@ -54,6 +55,19 @@ final class LocalTestProfiles: ObservableObject {
     var matched: [LocalTestProfile] { LocalTestProfile.women.filter { entries[$0.id]?.matched == true } }
     func messages(for profile: LocalTestProfile) -> [TestChatMessage] { entries[profile.id]?.messages ?? [] }
     func isMatched(_ profile: LocalTestProfile) -> Bool { entries[profile.id]?.matched == true }
+
+    func unreadCount(for profile: LocalTestProfile) -> Int {
+        guard let entry = entries[profile.id], entry.matched else { return 0 }
+        let start = entry.lastReadMessageID.flatMap { id in entry.messages.firstIndex { $0.id == id } }.map { $0 + 1 } ?? 0
+        return entry.messages.dropFirst(start).filter { !$0.sentByMe }.count
+    }
+    @discardableResult func markRead(_ profile: LocalTestProfile) -> Bool {
+        guard let entry = entries[profile.id], entry.matched, let last = entry.messages.last else { return false }
+        if entry.lastReadMessageID == last.id { return true }
+        var next = entries
+        next[profile.id]?.lastReadMessageID = last.id
+        return save(next)
+    }
 
     @discardableResult func like(_ profile: LocalTestProfile, signedIn: Bool) -> Bool {
         guard signedIn, LocalTestProfile.women.contains(profile) else { return false }

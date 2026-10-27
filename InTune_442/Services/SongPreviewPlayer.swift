@@ -7,15 +7,17 @@ final class SongPreviewPlayer: ObservableObject {
     static let shared = SongPreviewPlayer()
     @Published private(set) var songID: String?
     @Published private(set) var isPlaying = false
+    @Published private(set) var isBuffering = false
     @Published private(set) var failedSongID: String?
     private var player: AVPlayer?
     private var statusObservation: NSKeyValueObservation?
+    private var playbackObservation: NSKeyValueObservation?
     private var finishedObserver: NSObjectProtocol?
 
     func toggle(songID: String, url: URL) {
         if self.songID == songID, let player {
-            if isPlaying { player.pause() } else { player.play() }
-            isPlaying.toggle()
+            if player.timeControlStatus == .waitingToPlayAtSpecifiedRate { stop(); return }
+            if player.timeControlStatus == .playing { player.pause() } else { player.play() }
             return
         }
         stop()
@@ -29,7 +31,14 @@ final class SongPreviewPlayer: ObservableObject {
         self.player = player
         self.songID = songID
         failedSongID = nil
-        isPlaying = true
+        isPlaying = false
+        playbackObservation = player.observe(\.timeControlStatus, options: [.initial, .new]) { [weak self, weak player] _, _ in
+            Task { @MainActor in
+                guard let self, let player, self.player === player else { return }
+                self.isPlaying = player.timeControlStatus == .playing
+                self.isBuffering = player.timeControlStatus == .waitingToPlayAtSpecifiedRate
+            }
+        }
         statusObservation = item.observe(\.status, options: [.new]) { [weak self, weak item] _, _ in
             Task { @MainActor in
                 guard let self, let item, self.player?.currentItem === item else { return }
@@ -53,10 +62,12 @@ final class SongPreviewPlayer: ObservableObject {
         player?.pause()
         player = nil
         statusObservation = nil
+        playbackObservation = nil
         if let finishedObserver { NotificationCenter.default.removeObserver(finishedObserver) }
         finishedObserver = nil
         songID = nil
         isPlaying = false
+        isBuffering = false
         failedSongID = nil
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
