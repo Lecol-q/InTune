@@ -27,6 +27,7 @@ struct SettingsView: View {
     @ObservedObject private var demo = DemoSession.shared
     @ObservedObject private var testProfiles = LocalTestProfiles.shared
     @State private var resetCompleted = false
+    @Environment(\.localProfile) private var profile
     @Environment(\.dismiss) private var dismiss
     @AppStorage(AppAppearance.storageKey) private var appearance = AppAppearance.system.rawValue
 
@@ -36,6 +37,13 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section("Account and shared profiles") {
+                    if profile != nil {
+                        NavigationLink {
+                            AccountProfileView()
+                        } label: {
+                            Label("Profile", systemImage: "person.crop.circle")
+                        }
+                    }
                     NavigationLink("InTune account") { CommunityAccountView() }
                 }
                 if !music.connected && community.uid == nil {

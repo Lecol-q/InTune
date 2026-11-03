@@ -63,38 +63,89 @@ struct AccountProfileView: View {
     @State private var editing = false
 
     var body: some View {
-        Form {
+        ScrollView {
             if let profile {
-                Section {
-                    if let image = UIImage(data: profile.photo) {
-                        Image(uiImage: image).resizable().scaledToFit().frame(height: 160)
+                VStack(spacing: 20) {
+                    VStack(spacing: 12) {
+                        ProfilePhoto(data: profile.photo, size: 144)
+                        Text(profile.name)
+                            .font(.title2.bold())
+                            .accessibilityAddTraits(.isHeader)
+                        Button {
+                            editing = true
+                        } label: {
+                            Label("Edit profile", systemImage: "pencil")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .buttonBorderShape(.capsule)
                     }
-                    Text(profile.name).font(.headline)
-                    Text(profile.bio)
-                }
-                Section("Account details") {
-                    Text(profile.email)
-                    if let birthday = profile.birthday {
-                        LabeledContent("Date of birth", value: birthday.formatted(date: .long, time: .omitted))
+                    .frame(maxWidth: .infinity)
+                    .padding(24)
+                    .background(InTuneBrand.pink.opacity(0.10), in: .rect(cornerRadius: 24))
+
+                    detailsCard("About me") {
+                        Text(profile.bio)
+                            .foregroundStyle(.secondary)
+                    }
+                    detailsCard("Account details") {
+                        LabeledContent("Email", value: profile.email)
+                        if let birthday = profile.birthday {
+                            Divider()
+                            LabeledContent("Date of birth", value: birthday.formatted(date: .long, time: .omitted))
+                        }
                     }
                 }
-                Button("Edit profile") { editing = true }
-                    .sheet(isPresented: $editing) {
-                        NavigationStack {
-                            ProfileForm(profile: profile) { updated in
-                                try save(updated)
-                                editing = false
-                            }
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button("Cancel") { editing = false }
-                                }
+                .frame(maxWidth: 520)
+                .padding(20)
+                .frame(maxWidth: .infinity)
+                .sheet(isPresented: $editing) {
+                    NavigationStack {
+                        ProfileForm(profile: profile) { updated in
+                            try save(updated)
+                            editing = false
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Cancel") { editing = false }
                             }
                         }
                     }
+                }
             }
         }
+        .background(Color(uiColor: .systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("Profile")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func detailsCard<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.headline)
+                .accessibilityAddTraits(.isHeader)
+            content()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(18)
+        .background(Color(uiColor: .secondarySystemGroupedBackground), in: .rect(cornerRadius: 20))
+    }
+}
+
+private struct ProfilePhoto: View {
+    let data: Data
+    let size: CGFloat
+
+    var body: some View {
+        if let image = UIImage(data: data) {
+            let shape = RoundedRectangle(cornerRadius: size * 0.22)
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size, height: size)
+                .clipShape(shape)
+                .overlay { shape.strokeBorder(InTuneBrand.pink.opacity(0.45), lineWidth: 2) }
+                .accessibilityLabel("Profile photo")
+        }
     }
 }
 
@@ -160,13 +211,8 @@ struct ProfileForm: View {
                     TextField("Write a short bio", text: $bio, axis: .vertical)
                         .lineLimit(3...6)
                     Divider()
-                    if let photo, let image = UIImage(data: photo) {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 88, height: 88)
-                            .clipShape(.rect(cornerRadius: 18))
-                            .accessibilityLabel("Profile photo preview")
+                    if let photo {
+                        ProfilePhoto(data: photo, size: 88)
                     }
                     PhotosPicker(selection: $selection, matching: .images) {
                         Label(photo == nil ? "Choose profile photo" : "Change profile photo",

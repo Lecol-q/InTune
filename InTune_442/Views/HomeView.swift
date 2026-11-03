@@ -91,8 +91,6 @@ struct HomeView: View {
                 .tabItem { Label("My music", systemImage: "person.crop.circle") }.tag(2)
             NavigationStack { CommunityMatchesView() }
                 .tabItem { Label("Matches", systemImage: "bubble.left.and.bubble.right") }.tag(3)
-            NavigationStack { AccountProfileView() }
-                .tabItem { Label("Profile", systemImage: "person") }.tag(4)
         }.tint(InTuneBrand.pink)
             .sheet(item: $selectedTestChat) { person in LocalTestChatView(profile: person) }
             .task(id: community.uid) { await community.refresh() }
