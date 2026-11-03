@@ -2,16 +2,16 @@
 
 This is the proposed contract used by the app-side integration. Coordinate changes to collection names, field names, account providers, and rules with the iOS code; do not independently deploy an incompatible schema.
 
-**Status:** No Firebase project has been created or deployed by Codex. App Swift source typechecking passed. Executed REST/model checks passed for config validation, deterministic match IDs, public-profile field allowlists, Firestore encoding, authenticated requests, server timestamps, missing results, and sign-out. These mocked checks are separate from live backend validation. The Firestore rules and emulator test suite need to be executed and reviewed by the teammate handling Firebase before deployment.
+**Status:** The team has created `intune-6ce55` with Email/Password enabled and a default Firestore database (reported by the project owner). The reviewed Firestore rules were deployed with explicit approval on November 3, 2026, and the active ruleset was read back and verified against the tested file. See [SETUP-LOG.md](SETUP-LOG.md) for configuration, validation results, limitations, and remaining live acceptance checks.
 
 ## Teammate setup
 
-1. Create **one shared** Firebase project for all five teammates. Firestore and Authentication must belong to this project.
+1. Use the team's **existing shared** Firebase project, `intune-6ce55`, for all five teammates. Firestore and Authentication must belong to this project; do not create another project.
 2. Enable Firebase Authentication → Email/Password. Each person creates their own InTune account in the app. This account is separate from Spotify login. Email verification/password reset, account deletion, blocking/reporting, and abuse controls remain launch work, beyond this team prototype.
 3. Create a Cloud Firestore **default database**. Do not deploy an open test-mode ruleset.
 4. Register an app or obtain the Firebase project's public configuration. Put the project ID and **Web API key** into `InTune_442/CommunityConfig.json`. These identify the Firebase project; never add a service-account private key or admin credential to the iOS app. All teammates need this same config, plus independently allowlisted Spotify accounts for music import.
-5. From `backend/`, install the test dependencies with `npm install`, then run `npm run test:rules` (Java required). The script uses the `demo-intune` emulator project, not production.
-6. After rules tests and review pass, deploy the intended rules with `firebase deploy --only firestore:rules --project YOUR_PROJECT_ID`. Firebase deployment/login is the teammate's responsibility.
+5. From `backend/`, install the locked test dependencies with `npm ci`, then run `npm run test:rules` (Node 22 and Java required). With Homebrew's keg-only Node 22, first run `export PATH="/opt/homebrew/opt/node@22/bin:$PATH"`. The test script uses the `demo-intune` emulator project, not production; no Firebase login is required.
+6. After rules tests and review pass, obtain explicit approval before publishing the intended production rules. The CLI command, **only after approval**, is `npx firebase deploy --only firestore:rules --project intune-6ce55` from `backend/`. Firebase deployment/login is the teammate's responsibility.
 7. Everyone rebuilds the same iOS version, creates their own InTune account, connects Spotify if desired, and explicitly selects **Share my profile**. Signing in alone does not publish a profile.
 
 ## Collections

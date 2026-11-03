@@ -3,3 +3,6 @@ DerivedData/
 .build/
 *.xcuserstate
 xcuserdata/
+backend/node_modules/
+backend/*-debug.log
+backend/*-debug.*.log

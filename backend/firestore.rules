@@ -14,6 +14,19 @@ service cloud.firestore {
       return signedIn() && request.auth.uid in
         get(/databases/$(database)/documents/matches/$(matchID)).data.members;
     }
+    function stringEntry(values, index) {
+      return values.size() <= index || values[index] is string;
+    }
+    // Rules have no list iteration; check every slot allowed by the Swift contract.
+    function stringList(values, maximum) {
+      return values is list && values.size() <= maximum &&
+        stringEntry(values, 0) && stringEntry(values, 1) &&
+        stringEntry(values, 2) && stringEntry(values, 3) &&
+        stringEntry(values, 4) && stringEntry(values, 5) &&
+        stringEntry(values, 6) && stringEntry(values, 7) &&
+        stringEntry(values, 8) && stringEntry(values, 9) &&
+        stringEntry(values, 10) && stringEntry(values, 11);
+    }
     match /profiles/{uid} {
       allow get: if signedIn() && (request.auth.uid == uid || resource.data.active == true || matchedWith(uid));
       allow list: if signedIn() && resource.data.active == true;
@@ -24,8 +37,8 @@ service cloud.firestore {
         request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60 &&
         request.resource.data.age is int && request.resource.data.age >= 18 && request.resource.data.age <= 120 &&
         request.resource.data.bio is string && request.resource.data.bio.size() <= 500 &&
-        request.resource.data.artists is list && request.resource.data.artists.size() <= 10 &&
-        request.resource.data.genres is list && request.resource.data.genres.size() <= 12 &&
+        stringList(request.resource.data.artists, 10) &&
+        stringList(request.resource.data.genres, 12) &&
         request.resource.data.showcase is string && request.resource.data.showcase.size() <= 1000 &&
         request.resource.data.active is bool;
       allow delete: if signedIn() && request.auth.uid == uid;
