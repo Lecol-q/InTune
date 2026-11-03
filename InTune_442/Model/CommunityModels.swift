@@ -24,6 +24,7 @@ struct CommunityMessage: Identifiable, Equatable {
     let senderID: String
     let text: String
     let sentAt: Date
+    let readAt: Date?
 }
 
 struct FirebaseCommunityConfig: Codable {
