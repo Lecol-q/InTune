@@ -116,6 +116,13 @@ struct CommunityDiscoveryView: View {
 }
 
 struct CommunityChatView: View {
+    private struct PendingMessage: Identifiable, Equatable {
+        let id: String
+        let text: String
+        let date: Date
+        var failed = false
+    }
+
     let match: CommunityMatch
     let name: String
     @ObservedObject private var community = CommunityStore.shared
@@ -123,6 +130,7 @@ struct CommunityChatView: View {
     @State private var draft = ""
     @State private var error: String?
     @State private var sending = false
+    @State private var pending: PendingMessage?
     @State private var pendingMessageID: String?
     @State private var pendingText: String?
 
@@ -132,19 +140,22 @@ struct CommunityChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 12) {
                         ForEach(messages) { message in
-                            HStack {
-                                if message.senderID == community.uid { Spacer(minLength: 40) }
-                                Text(message.text).textSelection(.enabled).padding(12)
-                                    .background(message.senderID == community.uid ? InTuneBrand.pink.opacity(0.18) : Color.secondary.opacity(0.12),
-                                                in: RoundedRectangle(cornerRadius: 16))
-                                if message.senderID != community.uid { Spacer(minLength: 40) }
-                            }.id(message.id)
+                            let mine = message.senderID == community.uid
+                            bubble(text: message.text, mine: mine, time: message.sentAt,
+                                   receipt: mine ? receiptText(for: message) : nil,
+                                   receiptColor: message.readAt == nil ? .secondary : InTuneBrand.pink)
+                                .id(message.id)
+                        }
+                        if let pending, !messages.contains(where: { $0.id == pending.id }) {
+                            bubble(text: pending.text, mine: true, time: pending.date,
+                                   receipt: pending.failed ? "Not delivered. Tap send to retry" : "Sending…",
+                                   receiptColor: pending.failed ? .red : .secondary)
+                                .id(pending.id)
                         }
                     }.padding(16)
                 }
-                .onChange(of: messages.count) { _, _ in
-                    if let last = messages.last { proxy.scrollTo(last.id, anchor: .bottom) }
-                }
+                .onChange(of: messages.count) { _, _ in scrollToEnd(proxy) }
+                .onChange(of: pending?.id) { _, _ in scrollToEnd(proxy) }
             }
             if let error { Text(error).font(.footnote).foregroundStyle(.red).padding(.horizontal) }
             HStack {
@@ -163,34 +174,84 @@ struct CommunityChatView: View {
                 do { try await Task.sleep(nanoseconds: 3_000_000_000) } catch { break }
             }
         }
-        .onChange(of: community.uid) { _, _ in messages = []; draft = "" }
+        .onChange(of: community.uid) { _, _ in messages = []; draft = ""; pending = nil }
     }
+
+    // MARK: - Bubble + receipts
+
+    private func bubble(text: String, mine: Bool, time: Date?, receipt: String?, receiptColor: Color) -> some View {
+        HStack {
+            if mine { Spacer(minLength: 40) }
+            VStack(alignment: mine ? .trailing : .leading, spacing: 4) {
+                Text(text).textSelection(.enabled)
+                if let time {
+                    Text(stamp(time)).font(.caption2).foregroundStyle(.secondary)
+                }
+                if let receipt {
+                    Text(receipt).font(.caption2.weight(.medium)).foregroundStyle(receiptColor)
+                }
+            }
+            .padding(12)
+            .background(mine ? InTuneBrand.pink.opacity(0.18) : Color.secondary.opacity(0.12),
+                        in: RoundedRectangle(cornerRadius: 16))
+            if !mine { Spacer(minLength: 40) }
+        }
+    }
+
+    private func receiptText(for message: CommunityMessage) -> String {
+        if let readAt = message.readAt { return "Read " + stamp(readAt) }
+        return "Delivered"
+    }
+
+    private func stamp(_ date: Date) -> String {
+        Calendar.current.isDateInToday(date)
+            ? date.formatted(date: .omitted, time: .shortened)
+            : date.formatted(date: .abbreviated, time: .shortened)
+    }
+
+    private func scrollToEnd(_ proxy: ScrollViewProxy) {
+        if let id = pending?.id ?? messages.last?.id { proxy.scrollTo(id, anchor: .bottom) }
+    }
+
+    // MARK: - Loading / sending
+
     private func loadMessages() async {
         guard let expectedUID = community.uid else { messages = []; return }
         do {
             let loaded = try await community.messages(in: match)
             guard community.uid == expectedUID, !Task.isCancelled else { return }
             messages = loaded; error = nil
+            if let pending, loaded.contains(where: { $0.id == pending.id }) { self.pending = nil }
+            for message in loaded where message.senderID != expectedUID && message.readAt == nil {
+                try await community.markRead(message, in: match)
+            }
         } catch {
             guard community.uid == expectedUID, !Task.isCancelled else { return }
             self.error = error.localizedDescription
         }
     }
+
     private func send() async {
         sending = true
         defer { sending = false }
         // Reuse the ID on a retry if a response was lost, preventing duplicate deliveries.
         if pendingText != draft { pendingText = draft; pendingMessageID = UUID().uuidString }
         guard let id = pendingMessageID else { return }
+        let text = draft.trimmingCharacters(in: .whitespacesAndNewlines)
+        pending = PendingMessage(id: id, text: text, date: pending?.date ?? Date())
         do {
             try await community.send(draft, in: match, messageID: id)
             draft = ""; pendingText = nil; pendingMessageID = nil
             await loadMessages()
+            pending = nil
         } catch {
             await loadMessages()
             if messages.contains(where: { $0.id == id }) {
-                draft = ""; pendingText = nil; pendingMessageID = nil; self.error = nil
-            } else { self.error = error.localizedDescription }
+                draft = ""; pendingText = nil; pendingMessageID = nil; pending = nil; self.error = nil
+            } else {
+                pending?.failed = true
+                self.error = error.localizedDescription
+            }
         }
     }
 }
