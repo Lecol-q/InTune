@@ -27,6 +27,10 @@ service cloud.firestore {
         stringEntry(values, 8) && stringEntry(values, 9) &&
         stringEntry(values, 10) && stringEntry(values, 11);
     }
+    // Spotify refresh credentials are server-only; Admin SDK access is controlled by IAM.
+    match /spotifyConnections/{uid} {
+      allow read, write: if false;
+    }
     match /profiles/{uid} {
       allow get: if signedIn() && (request.auth.uid == uid || resource.data.active == true || matchedWith(uid));
       allow list: if signedIn() && resource.data.active == true;

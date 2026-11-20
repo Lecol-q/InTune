@@ -173,6 +173,7 @@ final class MusicProfileModel: ObservableObject {
 }
 
 struct Profile: View {
+    @Environment(\.localProfile) private var localProfile
     @ObservedObject private var model = MusicProfileModel.shared
     @ObservedObject private var demo = DemoSession.shared
     private var displayedTaste: MusicTaste? { demo.isActive ? demo.taste : model.taste }
@@ -181,6 +182,15 @@ struct Profile: View {
 
     var body: some View {
         Form {
+            if localProfile != nil {
+                Section("Your profile") {
+                    NavigationLink {
+                        AccountProfileView()
+                    } label: {
+                        Label("Profile", systemImage: "person.crop.circle")
+                    }
+                }
+            }
             Section("Your Spotify connection") {
                 Text("Connect Spotify to import your top artists and songs and generate your music taste overview.")
                 Text("You choose a showcase song. This prototype saves your music on this device. Missing artist genres are looked up in public MusicBrainz and Wikidata metadata; sharing profiles still requires the profile backend.")
