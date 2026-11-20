@@ -1,0 +1,520 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 90;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		732BFF3230719AF300B1DDFA /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 732BFF1630719AF300B1DDFA /* .gitkeep */; };
+		732BFF3330719AF300B1DDFA /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1E30719AF300B1DDFA /* TapGestureRecognizer.swift */; };
+		732BFF3430719AF300B1DDFA /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1930719AF300B1DDFA /* Array+Extensions.swift */; };
+		732BFF3530719AF300B1DDFA /* CardStackStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2930719AF300B1DDFA /* CardStackStateManager.swift */; };
+		732BFF3630719AF300B1DDFA /* CardStackAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2830719AF300B1DDFA /* CardStackAnimator.swift */; };
+		732BFF3730719AF300B1DDFA /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1D30719AF300B1DDFA /* StringUtils.swift */; };
+		732BFF3830719AF300B1DDFA /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2530719AF300B1DDFA /* SwipeView.swift */; };
+		732BFF3930719AF300B1DDFA /* CardStackAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2730719AF300B1DDFA /* CardStackAnimationOptions.swift */; };
+		732BFF3A30719AF300B1DDFA /* SwipeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2330719AF300B1DDFA /* SwipeCard.swift */; };
+		732BFF3B30719AF300B1DDFA /* CardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2230719AF300B1DDFA /* CardAnimator.swift */; };
+		732BFF3C30719AF300B1DDFA /* SwipeCardStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2A30719AF300B1DDFA /* SwipeCardStack.swift */; };
+		732BFF3D30719AF300B1DDFA /* SwipeCardStackDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2B30719AF300B1DDFA /* SwipeCardStackDataSource.swift */; };
+		732BFF3E30719AF300B1DDFA /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1F30719AF300B1DDFA /* UIView+Extensions.swift */; };
+		732BFF3F30719AF300B1DDFA /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1C30719AF300B1DDFA /* PanGestureRecognizer.swift */; };
+		732BFF4030719AF300B1DDFA /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1830719AF300B1DDFA /* Animator.swift */; };
+		732BFF4130719AF300B1DDFA /* SwipeCardStackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2C30719AF300B1DDFA /* SwipeCardStackDelegate.swift */; };
+		732BFF4230719AF300B1DDFA /* SwipeCardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2430719AF300B1DDFA /* SwipeCardDelegate.swift */; };
+		732BFF4330719AF300B1DDFA /* SwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2E30719AF300B1DDFA /* SwipeDirection.swift */; };
+		732BFF4430719AF300B1DDFA /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1B30719AF300B1DDFA /* CGVector+Extensions.swift */; };
+		732BFF4530719AF300B1DDFA /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF1A30719AF300B1DDFA /* CGPoint+Extensions.swift */; };
+		732BFF4630719AF300B1DDFA /* CardAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732BFF2130719AF300B1DDFA /* CardAnimationOptions.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		000000000000000000000120 /* InTune_442.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InTune_442.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		732BFF1630719AF300B1DDFA /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		732BFF1830719AF300B1DDFA /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		732BFF1930719AF300B1DDFA /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		732BFF1A30719AF300B1DDFA /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		732BFF1B30719AF300B1DDFA /* CGVector+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGVector+Extensions.swift"; sourceTree = "<group>"; };
+		732BFF1C30719AF300B1DDFA /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		732BFF1D30719AF300B1DDFA /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
+		732BFF1E30719AF300B1DDFA /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		732BFF1F30719AF300B1DDFA /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		732BFF2130719AF300B1DDFA /* CardAnimationOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnimationOptions.swift; sourceTree = "<group>"; };
+		732BFF2230719AF300B1DDFA /* CardAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnimator.swift; sourceTree = "<group>"; };
+		732BFF2330719AF300B1DDFA /* SwipeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCard.swift; sourceTree = "<group>"; };
+		732BFF2430719AF300B1DDFA /* SwipeCardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardDelegate.swift; sourceTree = "<group>"; };
+		732BFF2530719AF300B1DDFA /* SwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeView.swift; sourceTree = "<group>"; };
+		732BFF2730719AF300B1DDFA /* CardStackAnimationOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStackAnimationOptions.swift; sourceTree = "<group>"; };
+		732BFF2830719AF300B1DDFA /* CardStackAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStackAnimator.swift; sourceTree = "<group>"; };
+		732BFF2930719AF300B1DDFA /* CardStackStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStackStateManager.swift; sourceTree = "<group>"; };
+		732BFF2A30719AF300B1DDFA /* SwipeCardStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardStack.swift; sourceTree = "<group>"; };
+		732BFF2B30719AF300B1DDFA /* SwipeCardStackDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardStackDataSource.swift; sourceTree = "<group>"; };
+		732BFF2C30719AF300B1DDFA /* SwipeCardStackDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardStackDelegate.swift; sourceTree = "<group>"; };
+		732BFF2E30719AF300B1DDFA /* SwipeDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeDirection.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		732BFEFF3071981A00B1DDFA /* Exceptions for "InTune_442" folder in "InTune_442" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"InTune-442-Info.plist",
+			);
+			target = 000000000000000100000000 /* InTune_442 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		000000000000000000000010 /* InTune_442 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				732BFEFF3071981A00B1DDFA /* Exceptions for "InTune_442" folder in "InTune_442" target */,
+			);
+			path = InTune_442;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		000000000000000130000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000010 /* InTune_442 */,
+				732BFF3130719AF300B1DDFA /* Sources */,
+				000000000000000000000020 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		000000000000000000000020 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000120 /* InTune_442.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		732BFF1730719AF300B1DDFA /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF1630719AF300B1DDFA /* .gitkeep */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		732BFF2030719AF300B1DDFA /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF1830719AF300B1DDFA /* Animator.swift */,
+				732BFF1930719AF300B1DDFA /* Array+Extensions.swift */,
+				732BFF1A30719AF300B1DDFA /* CGPoint+Extensions.swift */,
+				732BFF1B30719AF300B1DDFA /* CGVector+Extensions.swift */,
+				732BFF1C30719AF300B1DDFA /* PanGestureRecognizer.swift */,
+				732BFF1D30719AF300B1DDFA /* StringUtils.swift */,
+				732BFF1E30719AF300B1DDFA /* TapGestureRecognizer.swift */,
+				732BFF1F30719AF300B1DDFA /* UIView+Extensions.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		732BFF2630719AF300B1DDFA /* SwipeCard */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF2130719AF300B1DDFA /* CardAnimationOptions.swift */,
+				732BFF2230719AF300B1DDFA /* CardAnimator.swift */,
+				732BFF2330719AF300B1DDFA /* SwipeCard.swift */,
+				732BFF2430719AF300B1DDFA /* SwipeCardDelegate.swift */,
+				732BFF2530719AF300B1DDFA /* SwipeView.swift */,
+			);
+			path = SwipeCard;
+			sourceTree = "<group>";
+		};
+		732BFF2D30719AF300B1DDFA /* SwipeCardStack */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF2730719AF300B1DDFA /* CardStackAnimationOptions.swift */,
+				732BFF2830719AF300B1DDFA /* CardStackAnimator.swift */,
+				732BFF2930719AF300B1DDFA /* CardStackStateManager.swift */,
+				732BFF2A30719AF300B1DDFA /* SwipeCardStack.swift */,
+				732BFF2B30719AF300B1DDFA /* SwipeCardStackDataSource.swift */,
+				732BFF2C30719AF300B1DDFA /* SwipeCardStackDelegate.swift */,
+			);
+			path = SwipeCardStack;
+			sourceTree = "<group>";
+		};
+		732BFF2F30719AF300B1DDFA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF2030719AF300B1DDFA /* Internal */,
+				732BFF2630719AF300B1DDFA /* SwipeCard */,
+				732BFF2D30719AF300B1DDFA /* SwipeCardStack */,
+				732BFF2E30719AF300B1DDFA /* SwipeDirection.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		732BFF3030719AF300B1DDFA /* Shuffle */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF1730719AF300B1DDFA /* Assets */,
+				732BFF2F30719AF300B1DDFA /* Classes */,
+			);
+			path = Shuffle;
+			sourceTree = "<group>";
+		};
+		732BFF3130719AF300B1DDFA /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				732BFF3030719AF300B1DDFA /* Shuffle */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000100000000 /* InTune_442 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 000000000000000110000000 /* Build configuration list for PBXNativeTarget "InTune_442" */;
+			buildPhases = (
+				000000000000000120000000 /* Sources */,
+				000000000000000130000000 /* Frameworks */,
+				000000000000000140000000 /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				000000000000000000000010 /* InTune_442 */,
+			);
+			name = InTune_442;
+			productName = MyApp;
+			productReference = 000000000000000000000120 /* InTune_442.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2630;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					000000000000000100000000 = {
+						CreatedOnToolsVersion = 26.3;
+						LastSwiftMigration = 2700;
+					};
+				};
+			};
+			buildConfigurationList = 000000000000000010000000 /* Build configuration list for PBXProject "InTune_442" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 000000000000000000000001;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 90;
+			productRefGroup = 000000000000000000000020 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				000000000000000100000000 /* InTune_442 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		000000000000000140000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				732BFF3230719AF300B1DDFA /* .gitkeep in Resources */,
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000000000000000120000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				732BFF3330719AF300B1DDFA /* TapGestureRecognizer.swift in Sources */,
+				732BFF3430719AF300B1DDFA /* Array+Extensions.swift in Sources */,
+				732BFF3530719AF300B1DDFA /* CardStackStateManager.swift in Sources */,
+				732BFF3630719AF300B1DDFA /* CardStackAnimator.swift in Sources */,
+				732BFF3730719AF300B1DDFA /* StringUtils.swift in Sources */,
+				732BFF3830719AF300B1DDFA /* SwipeView.swift in Sources */,
+				732BFF3930719AF300B1DDFA /* CardStackAnimationOptions.swift in Sources */,
+				732BFF3A30719AF300B1DDFA /* SwipeCard.swift in Sources */,
+				732BFF3B30719AF300B1DDFA /* CardAnimator.swift in Sources */,
+				732BFF3C30719AF300B1DDFA /* SwipeCardStack.swift in Sources */,
+				732BFF3D30719AF300B1DDFA /* SwipeCardStackDataSource.swift in Sources */,
+				732BFF3E30719AF300B1DDFA /* UIView+Extensions.swift in Sources */,
+				732BFF3F30719AF300B1DDFA /* PanGestureRecognizer.swift in Sources */,
+				732BFF4030719AF300B1DDFA /* Animator.swift in Sources */,
+				732BFF4130719AF300B1DDFA /* SwipeCardStackDelegate.swift in Sources */,
+				732BFF4230719AF300B1DDFA /* SwipeCardDelegate.swift in Sources */,
+				732BFF4330719AF300B1DDFA /* SwipeDirection.swift in Sources */,
+				732BFF4430719AF300B1DDFA /* CGVector+Extensions.swift in Sources */,
+				732BFF4530719AF300B1DDFA /* CGPoint+Extensions.swift in Sources */,
+				732BFF4630719AF300B1DDFA /* CardAnimationOptions.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		000000000000000011000000 /* Debug configuration for PBXProject "InTune_442" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DRIVERKIT_DEPLOYMENT_TARGET = 27.0;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PROJECT_UNIQUE_VALUE = AJ159MLZ;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 27.0;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Debug;
+		};
+		000000000000000012000000 /* Release configuration for PBXProject "InTune_442" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DRIVERKIT_DEPLOYMENT_TARGET = 27.0;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PROJECT_UNIQUE_VALUE = AJ159MLZ;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				TVOS_DEPLOYMENT_TARGET = 27.0;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
+				XROS_DEPLOYMENT_TARGET = 27.0;
+			};
+			name = Release;
+		};
+		000000000000000111000000 /* Debug configuration for PBXNativeTarget "InTune_442" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y939F7632M;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/InTune_442/InTune-442-Info.plist";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.collinlepersonalteam.InTune442;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "InTune_442/InTune_442-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		000000000000000112000000 /* Release configuration for PBXNativeTarget "InTune_442" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y939F7632M;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/InTune_442/InTune-442-Info.plist";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.collinlepersonalteam.InTune442;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "InTune_442/InTune_442-Bridging-Header.h";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000000000000000010000000 /* Build configuration list for PBXProject "InTune_442" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000011000000 /* Debug configuration for PBXProject "InTune_442" */,
+				000000000000000012000000 /* Release configuration for PBXProject "InTune_442" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		000000000000000110000000 /* Build configuration list for PBXNativeTarget "InTune_442" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000111000000 /* Debug configuration for PBXNativeTarget "InTune_442" */,
+				000000000000000112000000 /* Release configuration for PBXNativeTarget "InTune_442" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000000 /* Project object */;
+}
